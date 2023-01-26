@@ -1,7 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp().then((value){
+    runApp(MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -48,6 +53,26 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getData();
+  }
+
+  void getData() async{
+    CollectionReference datosdeFirabase =
+    FirebaseFirestore.instance.collection("datosFirestore");
+    
+    QuerySnapshot buffer = await datosdeFirabase.get();
+    
+    if(buffer.docs.length != 0){
+      for (var doc in buffer.docs){
+        print(doc.data());
+      }
+    }
+  }
+
   int _counter = 0;
 
   void _incrementCounter() {
@@ -96,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
-              'You have pushed the button this many times:',
+              'El tio',
             ),
             Text(
               '$_counter',
